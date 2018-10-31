@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class DashboardController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", name="dashboard")
      */
     public function index(): Response
     {
