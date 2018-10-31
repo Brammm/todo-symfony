@@ -1,4 +1,6 @@
 {
+    "name": "brammm/todo-symfony",
+    "description": "A Todo demo app in Symfony 4.1",
     "type": "project",
     "license": "proprietary",
     "require": {
@@ -24,6 +26,7 @@
         "symfony/yaml": "*"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-master",
         "symfony/debug-pack": "*",
         "symfony/dotenv": "*",
         "symfony/maker-bundle": "^1.0",
