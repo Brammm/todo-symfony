@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Todo\Tests\Integration;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Todo\Domain\User\User;
 use Todo\Domain\User\UserId;
 use Todo\Domain\User\UserRepository;
@@ -34,11 +35,29 @@ final class DoctrineUserRepositoryTest extends IntegrationTestCase
         );
 
         $this->repository->save($user);
-
         $this->flushAndClear();
 
         $foundUser = $this->repository->getById($user->id());
 
         $this->assertTrue($foundUser->id()->equals($id));
+    }
+
+    public function testItCantSaveUserWithSameEmailTwice(): void
+    {
+        $this->repository->save(new User(
+            UserId::generate(),
+            'John Doe',
+            'john@example.com',
+            'foo'
+        ));
+
+        $this->repository->save(new User(
+            UserId::generate(),
+            'John Smith',
+            'john@example.com',
+            'bar'
+        ));
+        $this->expectException(UniqueConstraintViolationException::class);
+        $this->flushAndClear();
     }
 }
