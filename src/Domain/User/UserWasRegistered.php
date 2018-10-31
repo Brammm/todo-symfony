@@ -2,7 +2,9 @@
 
 namespace Todo\Domain\User;
 
-final class UserWasRegistered
+use Todo\Domain\Event;
+
+final class UserWasRegistered extends Event
 {
     /**
      * @var UserId

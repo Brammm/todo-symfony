@@ -6,6 +6,7 @@ namespace Todo\Infrastructure\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Todo\Domain\EntityNotFoundException;
 use Todo\Domain\User\User;
 use Todo\Domain\User\UserId;
@@ -23,15 +24,24 @@ final class DoctrineUserRepository implements UserRepository
      */
     private $repository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher)
     {
         $this->entityManager = $entityManager;
         $this->repository = $this->entityManager->getRepository(User::class);
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function save(User $user): void
     {
         $this->entityManager->persist($user);
+        foreach ($user->releaseEvents() as $event) {
+            $this->eventDispatcher->dispatch($event->getName(), $event);
+        }
     }
 
     public function getById(UserId $userId): User

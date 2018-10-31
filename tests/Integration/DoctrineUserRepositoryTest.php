@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Todo\Tests\Integration;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Todo\Domain\EntityNotFoundException;
 use Todo\Domain\User\Password;
 use Todo\Domain\User\UserId;
@@ -22,7 +23,10 @@ final class DoctrineUserRepositoryTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = new DoctrineUserRepository($this->getEntityManager());
+        $this->repository = new DoctrineUserRepository(
+            $this->getEntityManager(),
+            $this->createMock(EventDispatcherInterface::class)
+        );
     }
 
     public function testItSavesAndGetsAUser(): void
