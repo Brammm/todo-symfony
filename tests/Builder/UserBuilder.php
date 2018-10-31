@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Todo\Tests\Builder;
 
-use Todo\Domain\User\HashedPassword;
 use Todo\Domain\User\Password;
 use Todo\Domain\User\User;
 use Todo\Domain\User\UserId;
@@ -64,7 +63,7 @@ final class UserBuilder
             $this->id,
             $this->name,
             $this->email,
-            HashedPassword::fromPassword($this->password)
+            $this->password
         );
     }
 }

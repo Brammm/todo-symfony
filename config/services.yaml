@@ -32,3 +32,10 @@ services:
     Todo\Application\User\RegisterUserCommandHandler:
         tags:
             - { name: tactician.handler, typehints: true }
+    Todo\Application\User\SendWelcomeMailCommandHandler:
+        tags:
+            - { name: tactician.handler, typehints: true }
+
+    Todo\Application\User\UserProcessManager:
+        tags:
+            - { name: kernel.event_listener, event: UserWasRegistered }

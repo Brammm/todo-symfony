@@ -46,16 +46,21 @@ final class User extends Aggregate
     {
     }
 
-    public static function register(UserId $id, string $name, string $email, HashedPassword $hashedPassword): self
+    public static function register(UserId $id, string $name, string $email, Password $password): self
     {
         $user = new self();
 
         $user->id = $id->toUuid();
         $user->name = $name;
         $user->email = $email;
-        $user->hashedPassword = (string) $hashedPassword;
+        $user->hashedPassword = (string) HashedPassword::fromPassword($password);
 
-        $user->recordThat(new UserWasRegistered($user->id()));
+        $user->recordThat(new UserWasRegistered(
+            $user->id(),
+            $name,
+            $email,
+            $password
+        ));
 
         return $user;
     }

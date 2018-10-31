@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Todo\Application\User\RegisterUser;
+use Todo\Domain\User\Password;
 use Todo\Domain\User\UserId;
 use Todo\Infrastructure\Form\RegisterUserType;
 
@@ -31,7 +32,7 @@ final class UserController extends AbstractController
                 UserId::generate(),
                 $data['name'],
                 $data['email'],
-                $data['password']
+                new Password($data['password'])
             ));
 
             return $this->redirectToRoute('dashboard');

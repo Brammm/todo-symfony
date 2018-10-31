@@ -10,6 +10,8 @@ abstract class Event extends BaseEvent
 {
     public function getName(): string
     {
-        return static::class;
+        $parts = explode('\\', static::class);
+
+        return array_pop($parts);
     }
 }

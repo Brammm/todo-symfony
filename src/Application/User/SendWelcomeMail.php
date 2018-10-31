@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Todo\Domain\User;
+namespace Todo\Application\User;
 
-use Todo\Domain\Event;
+use Todo\Domain\User\Password;
 
-final class UserWasRegistered extends Event
+final class SendWelcomeMail
 {
-    /**
-     * @var UserId
-     */
-    private $userId;
-
     /**
      * @var string
      */
@@ -28,17 +23,11 @@ final class UserWasRegistered extends Event
      */
     private $password;
 
-    public function __construct(UserId $userId, string $name, string $email, Password $password)
+    public function __construct(string $name, string $email, Password $password)
     {
-        $this->userId = $userId;
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
-    }
-
-    public function userId(): UserId
-    {
-        return $this->userId;
     }
 
     public function name(): string

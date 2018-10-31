@@ -11,7 +11,7 @@ services:
             - MYSQL_ROOT_PASSWORD=root
 
     todo-symfony-mailcatcher:
-        image: tophfr/mailcatcher
+        image: jeanberu/mailcatcher
         ports:
-            - 1080:80
-            - 1025:25
+            - 1080:1080
+            - 1025:1025
