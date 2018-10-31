@@ -6,10 +6,11 @@ namespace Todo\Tests\Integration;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Todo\Domain\EntityNotFoundException;
-use Todo\Domain\User\User;
+use Todo\Domain\User\Password;
 use Todo\Domain\User\UserId;
 use Todo\Domain\User\UserRepository;
 use Todo\Infrastructure\Repository\DoctrineUserRepository;
+use Todo\Tests\Builder\UserBuilder;
 
 final class DoctrineUserRepositoryTest extends IntegrationTestCase
 {
@@ -26,57 +27,42 @@ final class DoctrineUserRepositoryTest extends IntegrationTestCase
 
     public function testItSavesAndGetsAUser(): void
     {
-        $id = UserId::generate();
+        $password = new Password('foo');
 
-        $user = new User(
-            $id,
-            'John Doe',
-            'john@example.com',
-            'foo'
-        );
+        $user = UserBuilder::withDefaults()
+            ->withPassword($password)
+            ->build();
 
         $this->repository->save($user);
         $this->flushAndClear();
 
         $foundUser = $this->repository->getById($user->id());
 
-        $this->assertTrue($foundUser->id()->equals($id));
+        $this->assertTrue($foundUser->id()->equals($user->id()));
+        $this->assertTrue($foundUser->hashedPassword()->matches($password));
     }
 
     public function testItGetsUserByEmail(): void
     {
-        $id = UserId::generate();
-
-        $user = new User(
-            $id,
-            'John Doe',
-            'john@example.com',
-            'foo'
-        );
+        $user = UserBuilder::withDefaults()->build();
 
         $this->repository->save($user);
         $this->flushAndClear();
 
         $foundUser = $this->repository->getByEmail('john@example.com');
 
-        $this->assertTrue($foundUser->id()->equals($id));
+        $this->assertTrue($foundUser->id()->equals($user->id()));
     }
 
     public function testItCantSaveUserWithSameEmailTwice(): void
     {
-        $this->repository->save(new User(
-            UserId::generate(),
-            'John Doe',
-            'john@example.com',
-            'foo'
-        ));
+        $this->repository->save(
+            UserBuilder::withDefaults()->build()
+        );
 
-        $this->repository->save(new User(
-            UserId::generate(),
-            'John Smith',
-            'john@example.com',
-            'bar'
-        ));
+        $this->repository->save(
+            UserBuilder::withDefaults()->withId(UserId::fromString('c347eb41-9e7b-4b5d-93b7-07b9c522ecc4'))->build()
+        );
         $this->expectException(UniqueConstraintViolationException::class);
         $this->flushAndClear();
     }

@@ -6,11 +6,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Todo\Domain\EntityNotFoundException;
-use Todo\Domain\User\User;
-use Todo\Domain\User\UserId;
 use Todo\Domain\User\UserRepository;
 use Todo\Infrastructure\Form\UniqueEmail;
 use Todo\Infrastructure\Form\UniqueEmailValidator;
+use Todo\Tests\Builder\UserBuilder;
 
 class UniqueEmailValidatorTest extends TestCase
 {
@@ -43,12 +42,7 @@ class UniqueEmailValidatorTest extends TestCase
         $this->userRepository->expects($this->once())
             ->method('getByEmail')
             ->with('john@example.com')
-            ->willReturn(new User(
-                UserId::generate(),
-                'John',
-                'john@example.com',
-                'foo'
-            ));
+            ->willReturn(UserBuilder::withDefaults()->build());
 
         $this->context->expects($this->once())
             ->method('addViolation');

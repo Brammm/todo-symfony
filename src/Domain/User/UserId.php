@@ -34,6 +34,11 @@ final class UserId
         return new self($uuid);
     }
 
+    public static function fromString(string $uuid): self
+    {
+        return new self(Uuid::fromString($uuid));
+    }
+
     public function equals(UserId $that): bool
     {
         return $this->uuid->equals($that->uuid);
