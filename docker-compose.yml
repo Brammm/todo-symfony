@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+    todo-symfony-mysql:
+        image: mysql:8
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+            - 3309:3306
+        environment:
+            - MYSQL_DATABASE=todo
+            - MYSQL_ROOT_PASSWORD=root
+
+    todo-symfony-mailcatcher:
+        image: tophfr/mailcatcher
+        ports:
+            - 1080:80
+            - 1025:25
