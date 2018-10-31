@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Todo\Application\User;
 
+use Todo\Domain\User\Password;
 use Todo\Domain\User\UserId;
 
 final class RegisterUser
@@ -24,11 +25,11 @@ final class RegisterUser
     private $email;
 
     /**
-     * @var string
+     * @var Password
      */
     private $password;
 
-    public function __construct(UserId $userId, string $name, string $email, string $password)
+    public function __construct(UserId $userId, string $name, string $email, Password $password)
     {
         $this->userId = $userId;
         $this->name = $name;
@@ -51,7 +52,7 @@ final class RegisterUser
         return $this->email;
     }
 
-    public function password(): string
+    public function password(): Password
     {
         return $this->password;
     }

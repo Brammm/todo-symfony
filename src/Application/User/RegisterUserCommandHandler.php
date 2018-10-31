@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Todo\Application\User;
 
+use Todo\Domain\User\HashedPassword;
 use Todo\Domain\User\User;
 use Todo\Domain\User\UserRepository;
 
@@ -25,7 +26,7 @@ final class RegisterUserCommandHandler
             $command->userId(),
             $command->name(),
             $command->email(),
-            password_hash($command->password(), PASSWORD_DEFAULT)
+            HashedPassword::fromPassword($command->password())
         );
 
         $this->userRepository->save($user);

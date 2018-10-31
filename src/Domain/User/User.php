@@ -39,18 +39,23 @@ final class User
      *
      * @ORM\Column(type="string")
      */
-    private $passwordHash;
+    private $hashedPassword;
 
-    public function __construct(UserId $id, string $name, string $email, string $passwordHash)
+    public function __construct(UserId $id, string $name, string $email, HashedPassword $hashedPassword)
     {
         $this->id = $id->toUuid();
         $this->name = $name;
         $this->email = $email;
-        $this->passwordHash = $passwordHash;
+        $this->hashedPassword = (string) $hashedPassword;
     }
 
     public function id(): UserId
     {
         return UserId::fromUuid($this->id);
+    }
+
+    public function hashedPassword(): HashedPassword
+    {
+        return new HashedPassword($this->hashedPassword);
     }
 }
