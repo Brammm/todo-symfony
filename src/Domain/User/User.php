@@ -6,11 +6,12 @@ namespace Todo\Domain\User;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Todo\Domain\Aggregate;
 
 /**
  * @ORM\Entity
  */
-final class User
+final class User extends Aggregate
 {
     /**
      * @var Uuid
@@ -41,12 +42,22 @@ final class User
      */
     private $hashedPassword;
 
-    public function __construct(UserId $id, string $name, string $email, HashedPassword $hashedPassword)
+    private function __construct()
     {
-        $this->id = $id->toUuid();
-        $this->name = $name;
-        $this->email = $email;
-        $this->hashedPassword = (string) $hashedPassword;
+    }
+
+    public static function register(UserId $id, string $name, string $email, HashedPassword $hashedPassword): self
+    {
+        $user = new self();
+
+        $user->id = $id->toUuid();
+        $user->name = $name;
+        $user->email = $email;
+        $user->hashedPassword = (string) $hashedPassword;
+
+        $user->recordThat(new UserWasRegistered($user->id()));
+
+        return $user;
     }
 
     public function id(): UserId

@@ -58,7 +58,7 @@ final class UserBuilder
 
     public function build(): User
     {
-        return new User(
+        return User::register(
             $this->id,
             $this->name,
             $this->email,

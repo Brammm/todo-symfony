@@ -22,7 +22,7 @@ final class RegisterUserCommandHandler
 
     public function handle(RegisterUser $command): void
     {
-        $user = new User(
+        $user = User::register(
             $command->userId(),
             $command->name(),
             $command->email(),
