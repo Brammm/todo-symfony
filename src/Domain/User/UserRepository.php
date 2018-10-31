@@ -9,4 +9,6 @@ interface UserRepository
     public function save(User $user): void;
 
     public function getById(UserId $userId): User;
+
+    public function getByEmail(string $email): User;
 }

@@ -46,4 +46,17 @@ final class DoctrineUserRepository implements UserRepository
 
         return $user;
     }
+
+    public function getByEmail(string $email): User
+    {
+        $user = $this->repository->findOneBy([
+            'email' => $email,
+        ]);
+
+        if (!$user instanceof User) {
+            throw EntityNotFoundException::forEntityAndIdentifier('User', $email);
+        }
+
+        return $user;
+    }
 }

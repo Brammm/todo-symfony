@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Todo\Tests\Integration;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Todo\Domain\EntityNotFoundException;
 use Todo\Domain\User\User;
 use Todo\Domain\User\UserId;
 use Todo\Domain\User\UserRepository;
@@ -42,6 +43,25 @@ final class DoctrineUserRepositoryTest extends IntegrationTestCase
         $this->assertTrue($foundUser->id()->equals($id));
     }
 
+    public function testItGetsUserByEmail(): void
+    {
+        $id = UserId::generate();
+
+        $user = new User(
+            $id,
+            'John Doe',
+            'john@example.com',
+            'foo'
+        );
+
+        $this->repository->save($user);
+        $this->flushAndClear();
+
+        $foundUser = $this->repository->getByEmail('john@example.com');
+
+        $this->assertTrue($foundUser->id()->equals($id));
+    }
+
     public function testItCantSaveUserWithSameEmailTwice(): void
     {
         $this->repository->save(new User(
@@ -59,5 +79,17 @@ final class DoctrineUserRepositoryTest extends IntegrationTestCase
         ));
         $this->expectException(UniqueConstraintViolationException::class);
         $this->flushAndClear();
+    }
+
+    public function testItThrowsExceptionIfItCantFindUserById(): void
+    {
+        $this->expectException(EntityNotFoundException::class);
+        $this->repository->getById(UserId::generate());
+    }
+
+    public function testItThrowsExceptionIfItCantFindUserByEmail(): void
+    {
+        $this->expectException(EntityNotFoundException::class);
+        $this->repository->getByEmail('john@example.com');
     }
 }

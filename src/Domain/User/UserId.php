@@ -38,4 +38,9 @@ final class UserId
     {
         return $this->uuid->equals($that->uuid);
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->uuid;
+    }
 }
