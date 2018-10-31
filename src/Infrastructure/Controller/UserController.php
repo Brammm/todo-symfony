@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Todo\Application\User\RegisterUser;
 use Todo\Domain\User\UserId;
+use Todo\Infrastructure\Form\RegisterUserType;
 
 final class UserController extends AbstractController
 {
@@ -19,12 +20,7 @@ final class UserController extends AbstractController
      */
     public function register(Request $request, CommandBus $commandBus): Response
     {
-        $form = $this->createFormBuilder()
-            ->add('name', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('password', PasswordType::class)
-            ->add('register', SubmitType::class)
-            ->getForm();
+        $form = $this->createForm(RegisterUserType::class);
 
         $form->handleRequest($request);
 
