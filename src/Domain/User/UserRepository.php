@@ -11,4 +11,9 @@ interface UserRepository
     public function getById(UserId $userId): User;
 
     public function getByEmail(string $email): User;
+
+    /**
+     * @return User[]
+     */
+    public function findAll(): array;
 }

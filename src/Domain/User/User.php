@@ -74,4 +74,14 @@ final class User extends Aggregate
     {
         return new HashedPassword($this->hashedPassword);
     }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function email(): string
+    {
+        return $this->email;
+    }
 }

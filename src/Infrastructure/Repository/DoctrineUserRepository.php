@@ -69,4 +69,9 @@ final class DoctrineUserRepository implements UserRepository
 
         return $user;
     }
+
+    public function findAll(): array
+    {
+        return $this->repository->findAll();
+    }
 }

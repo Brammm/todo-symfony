@@ -12,12 +12,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Todo\Application\User\RegisterUser;
 use Todo\Domain\User\Password;
 use Todo\Domain\User\UserId;
+use Todo\Domain\User\UserRepository;
 use Todo\Infrastructure\Form\RegisterUserType;
 
 final class UserController extends AbstractController
 {
     /**
-     * @Route("/user/register")
+     * @Route("/users", name="users.list")
+     */
+    public function list(UserRepository $userRepository): Response
+    {
+        return $this->render('user/list.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/users/register", name="users.register")
      */
     public function register(Request $request, CommandBus $commandBus): Response
     {
