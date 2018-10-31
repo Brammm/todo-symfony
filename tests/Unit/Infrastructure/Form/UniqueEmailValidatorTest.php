@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Todo\Tests\Unit\Infrastructure\Form;
 
 use PHPUnit\Framework\MockObject\MockObject;

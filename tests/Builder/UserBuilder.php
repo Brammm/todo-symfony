@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Todo\Tests\Builder;
 
@@ -65,5 +67,4 @@ final class UserBuilder
             HashedPassword::fromPassword($this->password)
         );
     }
-
 }
