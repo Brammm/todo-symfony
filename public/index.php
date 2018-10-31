@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Todo\Infrastructure\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;

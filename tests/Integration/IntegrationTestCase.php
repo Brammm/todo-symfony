@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Todo\Tests\Integration;
 
@@ -14,7 +16,7 @@ abstract class IntegrationTestCase extends KernelTestCase
 
     public function getEntityManager(): EntityManagerInterface
     {
-        if ($this->entityManager === null) {
+        if (null === $this->entityManager) {
             self::bootKernel();
 
             $this->entityManager = self::$container->get(EntityManagerInterface::class);

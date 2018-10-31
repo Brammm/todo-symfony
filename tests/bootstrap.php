@@ -1,6 +1,8 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+declare(strict_types=1);
+
+require __DIR__.'/../vendor/autoload.php';
 
 use Doctrine\ORM\Tools\SchemaTool;
 use Todo\Tests\Integration\IntegrationTestCase;
@@ -20,8 +22,8 @@ class Bootstrap
     {
         if (!self::$testDatabaseCreated) {
             $database = self::getDatabaseInformation()['database'];
-            self::getPDO()->exec('DROP DATABASE IF EXISTS ' . $database);
-            self::getPDO()->exec('CREATE DATABASE ' . $database);
+            self::getPDO()->exec('DROP DATABASE IF EXISTS '.$database);
+            self::getPDO()->exec('CREATE DATABASE '.$database);
 
             $em = $test->getEntityManager();
             $schemaTool = new SchemaTool($em);
@@ -37,7 +39,7 @@ class Bootstrap
             return;
         }
 
-        self::getPDO()->exec('DROP DATABASE IF EXISTS ' . self::getDatabaseInformation()['database']);
+        self::getPDO()->exec('DROP DATABASE IF EXISTS '.self::getDatabaseInformation()['database']);
     }
 
     private static function getPDO(): PDO
