@@ -26,7 +26,7 @@ final class SendWelcomeMailCommandHandler implements MessageHandlerInterface
         $this->mailer = $mailer;
         $this->twig = $twig;
     }
-    
+
     public function __invoke(SendWelcomeMail $command): void
     {
         $message = (new Swift_Message('Hello Email'))
