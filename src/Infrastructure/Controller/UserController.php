@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Todo\Infrastructure\Controller;
 
-use League\Tactician\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Todo\Application\User\RegisterUser;
 use Todo\Domain\User\Password;
 use Todo\Domain\User\UserId;
@@ -30,7 +29,7 @@ final class UserController extends AbstractController
     /**
      * @Route("/users/register", name="users.register")
      */
-    public function register(Request $request, CommandBus $commandBus): Response
+    public function register(Request $request, MessageBusInterface $bus): Response
     {
         $form = $this->createForm(RegisterUserType::class);
 
@@ -39,7 +38,7 @@ final class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $commandBus->handle(new RegisterUser(
+            $bus->dispatch(new RegisterUser(
                 UserId::generate(),
                 $data['name'],
                 $data['email'],

@@ -6,9 +6,10 @@ namespace Todo\Application\User;
 
 use Swift_Mailer;
 use Swift_Message;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Twig_Environment;
 
-final class SendWelcomeMailCommandHandler
+final class SendWelcomeMailCommandHandler implements MessageHandlerInterface
 {
     /**
      * @var Swift_Mailer
@@ -26,7 +27,7 @@ final class SendWelcomeMailCommandHandler
         $this->twig = $twig;
     }
     
-    public function handle(SendWelcomeMail $command): void
+    public function __invoke(SendWelcomeMail $command): void
     {
         $message = (new Swift_Message('Hello Email'))
             ->setFrom('hello@bitcode.be', 'Bram from Todo')

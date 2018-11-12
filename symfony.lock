@@ -86,27 +86,6 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
-    "league/tactician": {
-        "version": "v1.0.3"
-    },
-    "league/tactician-bundle": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "222c3d39d38378bc6a9790a0b5baf841ba6679b9"
-        }
-    },
-    "league/tactician-container": {
-        "version": "2.0.0"
-    },
-    "league/tactician-doctrine": {
-        "version": "v1.1.1"
-    },
-    "league/tactician-logger": {
-        "version": "v0.10.0"
-    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
@@ -339,6 +318,15 @@
             "branch": "master",
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
+        }
+    },
+    "symfony/messenger": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.1",
+            "ref": "f11dfa18618a8a5dd853ea3a302db2e0557e031c"
         }
     },
     "symfony/monolog-bridge": {

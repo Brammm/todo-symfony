@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Todo\Application\User;
 
-use League\Tactician\CommandBus;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Todo\Domain\User\UserWasRegistered;
 
 final class UserProcessManager
 {
     /**
-     * @var CommandBus
+     * @var MessageBusInterface
      */
-    private $commandBus;
+    private $bus;
 
-    public function __construct(CommandBus $commandBus)
+    public function __construct(MessageBusInterface $bus)
     {
-        $this->commandBus = $commandBus;
+        $this->bus = $bus;
     }
 
     public function onUserWasRegistered(UserWasRegistered $event): void
     {
-        $this->commandBus->handle(new SendWelcomeMail(
+        $this->bus->dispatch(new SendWelcomeMail(
             $event->name(),
             $event->email(),
             $event->password()
