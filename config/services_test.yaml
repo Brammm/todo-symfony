@@ -1,0 +1,3 @@
+services:
+    Todo\Domain\User\UserRepository:
+        class: Todo\Tests\Repository\InMemoryUserRepository

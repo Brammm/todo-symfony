@@ -31,6 +31,7 @@
         "symfony/yaml": "*"
     },
     "require-dev": {
+        "behat/behat": "^3.4",
         "friendsofphp/php-cs-fixer": "^2.13",
         "phpunit/phpunit": "^7.4",
         "roave/security-advisories": "dev-master",
@@ -49,7 +50,10 @@
     "autoload": {
         "psr-4": {
             "Todo\\": "src/"
-        }
+        },
+        "files": [
+            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
