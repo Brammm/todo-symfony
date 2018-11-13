@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Todo\Tests\Integration\User;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Exception;
 use Todo\Domain\EntityNotFoundException;
 use Todo\Domain\User\Password;
 use Todo\Domain\User\UserId;
@@ -28,8 +27,8 @@ trait UserRepositoryTest
 
         $foundUser = $this->getRepository()->getById($user->id());
 
-        assertTrue($foundUser->id()->equals($user->id()));
-        assertTrue($foundUser->hashedPassword()->matches($password));
+        $this->assertTrue($foundUser->id()->equals($user->id()));
+        $this->assertTrue($foundUser->hashedPassword()->matches($password));
     }
 
     public function testItGetsUserByEmail(): void
@@ -40,7 +39,7 @@ trait UserRepositoryTest
 
         $foundUser = $this->getRepository()->getByEmail('john@example.com');
 
-        assertTrue($foundUser->id()->equals($user->id()));
+        $this->assertTrue($foundUser->id()->equals($user->id()));
     }
 
     public function testItCantSaveUserWithSameEmailTwice(): void
@@ -49,30 +48,21 @@ trait UserRepositoryTest
             UserBuilder::withDefaults()->build()
         );
 
-        try {
-            $this->getRepository()->save(
-                UserBuilder::withDefaults()->withId(UserId::fromString('c347eb41-9e7b-4b5d-93b7-07b9c522ecc4'))->build()
-            );
-        } catch (Exception $e) {
-            assertInstanceOf(UniqueConstraintViolationException::class, $e);
-        }
+        $this->expectException(UniqueConstraintViolationException::class);
+        $this->getRepository()->save(
+            UserBuilder::withDefaults()->withId(UserId::fromString('c347eb41-9e7b-4b5d-93b7-07b9c522ecc4'))->build()
+        );
     }
 
     public function testItThrowsExceptionIfItCantFindUserById(): void
     {
-        try {
-            $this->getRepository()->getById(UserId::generate());
-        } catch (Exception $e) {
-            assertInstanceOf(EntityNotFoundException::class, $e);
-        }
+        $this->expectException(EntityNotFoundException::class);
+        $this->getRepository()->getById(UserId::generate());
     }
 
     public function testItThrowsExceptionIfItCantFindUserByEmail(): void
     {
-        try {
-            $this->getRepository()->getByEmail('john@example.com');
-        } catch (Exception $e) {
-            assertInstanceOf(EntityNotFoundException::class, $e);
-        }
+        $this->expectException(EntityNotFoundException::class);
+        $this->getRepository()->getByEmail('john@example.com');
     }
 }
