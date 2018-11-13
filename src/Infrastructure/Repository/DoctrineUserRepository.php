@@ -39,6 +39,7 @@ final class DoctrineUserRepository implements UserRepository
     public function save(User $user): void
     {
         $this->entityManager->persist($user);
+        $this->entityManager->flush();
         foreach ($user->releaseEvents() as $event) {
             $this->eventDispatcher->dispatch($event->getName(), $event);
         }

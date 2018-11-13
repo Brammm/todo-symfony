@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Todo\Tests\Repository;
 
+use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Todo\Domain\EntityNotFoundException;
 use Todo\Domain\User\User;
 use Todo\Domain\User\UserId;
@@ -16,9 +18,14 @@ final class InMemoryUserRepository implements UserRepository
      */
     private $users = [];
 
-    public function save(User $user): void
+    public function save(User $newUser): void
     {
-        $this->users[(string) $user->id()] = $user;
+        foreach ($this->users as $user) {
+            if ($newUser->email() === $user->email()) {
+                throw new UniqueConstraintViolationException('user with email already exists', new PDOException(new \PDOException()));
+            }
+        }
+        $this->users[(string) $newUser->id()] = $newUser;
     }
 
     public function getById(UserId $userId): User
@@ -38,7 +45,7 @@ final class InMemoryUserRepository implements UserRepository
             }
         }
 
-        throw EntityNotFoundException::forEntityAndIdentifier('User', (string) $userId);
+        throw EntityNotFoundException::forEntityAndIdentifier('User', $email);
     }
 
     public function findAll(): array

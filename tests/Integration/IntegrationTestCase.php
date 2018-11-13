@@ -25,12 +25,6 @@ abstract class IntegrationTestCase extends KernelTestCase
         return $this->entityManager;
     }
 
-    public function flushAndClear(): void
-    {
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
-    }
-
     protected function setUp(): void
     {
         $this->getEntityManager()->beginTransaction();

@@ -29,7 +29,6 @@ final class DoctrineTransactionalMiddleware implements MiddlewareInterface
         $this->entityManager->beginTransaction();
         try {
             $result = $next($message);
-            $this->entityManager->flush();
             $this->entityManager->commit();
         } catch (\Exception $e) {
             $this->entityManager->rollback();
