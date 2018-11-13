@@ -15,11 +15,6 @@ use Todo\Infrastructure\Kernel;
 class FeatureContext implements Context
 {
     /**
-     * @var Kernel
-     */
-    private $kernel;
-
-    /**
      * @var ContainerInterface
      */
     private $container;
@@ -33,11 +28,10 @@ class FeatureContext implements Context
      */
     public function __construct()
     {
-        $this->kernel = new Kernel(Kernel::ACCEPTANCE, true);
-        $this->kernel->boot();
+        $kernel = new Kernel('test', true);
+        $kernel->boot();
 
-        $container = $this->kernel->getContainer();
-        $this->container = $container->has('test.service_container') ? $container->get('test.service_container') : $container;
+        $this->container = $kernel->getContainer()->get('test.service_container');
     }
 
     /**

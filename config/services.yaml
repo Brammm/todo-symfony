@@ -33,3 +33,8 @@ services:
     Todo\Application\User\UserProcessManager:
         tags:
             - { name: kernel.event_listener, event: UserWasRegistered }
+
+    Todo\Domain\User\UserRepository:
+        class: Todo\Infrastructure\Repository\DoctrineUserRepository
+        arguments:
+          ['@doctrine.orm.default_entity_manager', '@event_dispatcher']
