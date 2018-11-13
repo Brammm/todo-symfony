@@ -9,11 +9,40 @@ use Todo\Domain\EntityNotFoundException;
 use Todo\Domain\User\Password;
 use Todo\Domain\User\UserId;
 use Todo\Domain\User\UserRepository;
+use Todo\Domain\User\UserWasRegistered;
 use Todo\Tests\Builder\UserBuilder;
+use Todo\Tests\Integration\LoggingEventDispatcher;
 
 trait UserRepositoryTest
 {
+    /**
+     * @var LoggingEventDispatcher
+     */
+    private $eventDispatcher;
+
     abstract public function getRepository(): UserRepository;
+
+    public function getEventDispatcher(): LoggingEventDispatcher
+    {
+        if ($this->eventDispatcher === null) {
+            $this->eventDispatcher = new LoggingEventDispatcher();
+        }
+
+        return $this->eventDispatcher;
+    }
+
+    public function testItDispatchesEventsOnSave()
+    {
+        $user = UserBuilder::withDefaults()
+            ->withPassword(new Password('foo'))
+            ->build();
+
+        $this->getRepository()->save($user);
+
+        $events = $this->getEventDispatcher()->getDispatchedEvents();
+        $this->assertCount(1, $events);
+        $this->assertInstanceOf(UserWasRegistered::class, array_shift($events));
+    }
 
     public function testItSavesAndGetsAUser(): void
     {

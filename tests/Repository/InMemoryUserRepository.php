@@ -6,6 +6,7 @@ namespace Todo\Tests\Repository;
 
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Todo\Domain\EntityNotFoundException;
 use Todo\Domain\User\User;
 use Todo\Domain\User\UserId;
@@ -17,6 +18,15 @@ final class InMemoryUserRepository implements UserRepository
      * @var User[]
      */
     private $users = [];
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     public function save(User $newUser): void
     {
@@ -26,6 +36,9 @@ final class InMemoryUserRepository implements UserRepository
             }
         }
         $this->users[(string) $newUser->id()] = $newUser;
+        foreach ($newUser->releaseEvents() as $event) {
+            $this->eventDispatcher->dispatch($event->getName(), $event);
+        }
     }
 
     public function getById(UserId $userId): User

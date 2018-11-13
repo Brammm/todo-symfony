@@ -1,3 +1,5 @@
 services:
     Todo\Domain\User\UserRepository:
         class: Todo\Tests\Repository\InMemoryUserRepository
+        arguments:
+          ['@event_dispatcher']

@@ -20,7 +20,7 @@ final class InMemoryUserRepositoryTest extends TestCase
     public function getRepository(): UserRepository
     {
         if ($this->repository === null) {
-            $this->repository = new InMemoryUserRepository();
+            $this->repository = new InMemoryUserRepository($this->getEventDispatcher());
         }
 
         return $this->repository;
