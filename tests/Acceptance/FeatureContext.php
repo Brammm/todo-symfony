@@ -33,7 +33,7 @@ class FeatureContext implements Context
      */
     public function __construct()
     {
-        $this->kernel = new Kernel('test', true);
+        $this->kernel = new Kernel(Kernel::ACCEPTANCE, true);
         $this->kernel->boot();
 
         $container = $this->kernel->getContainer();

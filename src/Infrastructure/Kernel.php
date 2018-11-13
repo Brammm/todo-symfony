@@ -16,6 +16,20 @@ final class Kernel extends BaseKernel
     use MicroKernelTrait;
 
     const CONFIG_EXTS = '.yaml';
+    public const ACCEPTANCE = 'acceptance';
+
+    private $isAcceptanceTest = false;
+
+    public function __construct(string $environment, bool $debug)
+    {
+        if ($environment === self::ACCEPTANCE) {
+            $this->isAcceptanceTest = true;
+            $environment = 'test';
+        }
+
+        parent::__construct($environment, $debug);
+    }
+
 
     public function getCacheDir()
     {
@@ -47,6 +61,9 @@ final class Kernel extends BaseKernel
         $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
+        if ($this->isAcceptanceTest) {
+            $loader->load($confDir.'/{services}_acceptance'.self::CONFIG_EXTS, 'glob');
+        }
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
