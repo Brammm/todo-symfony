@@ -6,7 +6,7 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        <nav><a href="{{ path('dashboard') }}">Dashboard</a> - <a href="{{ path('users.list') }}">Users</a></nav>
+        <nav><a href="{{ path('dashboard') }}">Dashboard</a> - <a href="{{ path('users.list') }}">Users</a> - <a href="{{ path('logout') }}">Log out</a> </nav>
 
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
