@@ -19,8 +19,8 @@ final class DoctrineUserRepositoryTest extends IntegrationTestCase
 
     public function getRepository(): UserRepository
     {
-        if ($this->repository === null) {
-            $this->repository =  new DoctrineUserRepository(
+        if (null === $this->repository) {
+            $this->repository = new DoctrineUserRepository(
                 $this->getEntityManager(),
                 $this->getEventDispatcher()
             );

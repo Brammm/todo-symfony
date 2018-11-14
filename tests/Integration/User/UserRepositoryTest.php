@@ -24,7 +24,7 @@ trait UserRepositoryTest
 
     public function getEventDispatcher(): LoggingEventDispatcher
     {
-        if ($this->eventDispatcher === null) {
+        if (null === $this->eventDispatcher) {
             $this->eventDispatcher = new LoggingEventDispatcher();
         }
 

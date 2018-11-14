@@ -13,7 +13,6 @@ use Todo\Domain\User\UserRepository;
 
 final class AuthenticatedUserProvider implements UserProviderInterface
 {
-
     /**
      * @var UserRepository
      */
@@ -60,6 +59,6 @@ final class AuthenticatedUserProvider implements UserProviderInterface
 
     public function supportsClass($class)
     {
-        return $class === AuthenticatedUser::class;
+        return AuthenticatedUser::class === $class;
     }
 }

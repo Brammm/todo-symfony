@@ -22,7 +22,6 @@ final class Kernel extends BaseKernel
         parent::__construct($environment, $debug);
     }
 
-
     public function getCacheDir()
     {
         return $this->getProjectDir().'/var/cache/'.$this->environment;

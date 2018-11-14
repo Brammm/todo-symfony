@@ -37,6 +37,5 @@ final class DoctrineTransactionalMiddleware implements MiddlewareInterface
         }
 
         return $result;
-
     }
 }
